@@ -33,7 +33,7 @@ def test_PxC(N=25):
         return
 
     r = random(N)
-    l = 2*random(N) # Wider l, so it is more frequent r<l
+    l = 2*random(N)  # Wider l, so it is more frequent r<l
 
     for wintype in WINTYPES:
         print("Testing wintype: %s" % wintype)

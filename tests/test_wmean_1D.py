@@ -16,6 +16,7 @@ except:
 if with_cython:
     import cmaud
 
+
 def test_mask(N=10):
     l = 5
     t = np.arange(N)
@@ -64,7 +65,7 @@ def eval_ones(y, t, l):
     # Select the top 1 third of the positions
     thr = np.percentile(tmp, 70)
 
-    y = ma.masked_array(y, tmp>=thr)
+    y = ma.masked_array(y, tmp >= thr)
     h = maud.wmean_1D(y, t=t, l=l)
     assert (h == 1).all()
     if with_cython:
@@ -72,7 +73,7 @@ def eval_ones(y, t, l):
         assert (h == 1).all()
 
     # Masked values should not interfere in the filtered output.
-    y.data[y.mask==True] = 1e10
+    y.data[y.mask == True] = 1e10
     h = maud.wmean_1D(y, t=t, l=l)
     assert (h == 1).all()
     if with_cython:
@@ -85,6 +86,7 @@ def eval_ones(y, t, l):
     if with_cython:
         h = cmaud.wmean_1D(y, t=t, l=l, interp=True)
         assert (h == 1).all()
+
 
 def test_ones(N=25):
     """ The energy must be preserved
@@ -101,7 +103,7 @@ def test_ones(N=25):
 
     #print("Testing 2D array")
     t = np.arange(N)
-    y = np.ones((N,3))
+    y = np.ones((N, 3))
     eval_ones(y, t, l)
 
 
@@ -136,6 +138,7 @@ def test_Serial_x_Parallel(N=10):
     h = maud.wmean_1D(y, t=t, l=l)
     assert (h_serial == h).all()
 
+
 def Python_x_Cython(N=10):
     if not with_cython:
         return
@@ -157,7 +160,6 @@ def test_answer():
     """
     if not with_cython:
         return
-
 
     N = 7
     Nt = 20
@@ -182,7 +184,7 @@ def test_pass_all():
 
     T1 = 50*np.random.random()
     l = T1/50
-    t = np.arange(-50,50.5,.5)
+    t = np.arange(-50, 50.5, .5)
     Z = ma.array(np.random.random(t.size))
     S1 = np.sin(2*pi*t/T1) + 10
     y = S1 + Z
@@ -198,7 +200,7 @@ def test_sin_diff():
 
     T1 = 100
     l = T1/2
-    t = np.arange(-50,50.5,.5)
+    t = np.arange(-50, 50.5, .5)
     Z = ma.array(np.random.random(t.size))
     S1 = np.sin(2*pi*t/T1)
     y = S1 + Z
@@ -213,7 +215,7 @@ def notest_bandpass():
         Creates another test with random window lenghts
     """
     N = 100
-    x =  ma.array(np.sort(N*np.random.random(N)))
+    x = ma.array(np.sort(N*np.random.random(N)))
     y1 = 3*np.sin(2*pi * x/(N/3.) + 2*pi*np.random.random())
     y2 = 3*np.sin(2*pi * x/(N/11.) + 2*pi*np.random.random())
     y3 = 3*np.sin(2*pi * x/(N/21.) + 2*pi*np.random.random())
@@ -222,6 +224,5 @@ def notest_bandpass():
     f = y - maud.wmean_1D(data=y, l=N/7., t=x)
     f = maud.wmean_1D(data=f, l=N/15., t=x)
     fb = maud.wmean_bandpass_1D(data=y, lshorterpass=N/15., llongerpass=N/7.,
-            t=x)
+                                t=x)
     assert ma.allclose(f, fb)
-

@@ -21,8 +21,6 @@ if with_cython:
 #def random_input(N=10):
 #    I, J = (N*random(2)).astype('i')+1
 
-
-
 WINTYPES = ['hamming', 'hann', 'blackman', 'boxcar']
 
 
@@ -171,9 +169,9 @@ def whitenoise(Lat, Lon, l):
 def hardcoded_maskedarray():
     """Test if masked data is not considered in the average
     """
-    h = np.array([[ 1e9,  1e9,  1e9],
-         [ 1e9,  3.14,  1e9],
-         [ 1e9,  1e9,  1e9]])
+    h = np.array([[1e9,  1e9,  1e9],
+                  [1e9, 3.14,  1e9],
+                  [1e9,  1e9,  1e9]])
 
     h = ma.masked_greater(h, 10)
 
@@ -214,7 +212,6 @@ def random_maskedarray(N=10, res=0.1):
     assert (np.absolute(h_smooth - h).sum() == 0.)
 
 
-
 def interp():
     """ Test interp option
     """
@@ -232,8 +229,8 @@ def interp():
     assert ((h_smooth - h_smooth_i) == 0).all()
     assert (h_smooth_i.compressed().size >= h_smooth.compressed().size)
 
-def answer():
 
+def answer():
 
     lon = np.arange(-1, 10.01, 0.1)
     lat = np.arange(-5, 1.01, 0.1)

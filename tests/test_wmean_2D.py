@@ -21,6 +21,7 @@ if with_cython:
 #def random_input(N=10):
 #    I, J = (N*random(2)).astype('i')+1
 
+
 def test_inputsizes(f=wmean_2D):
     tests_support.inputsizes_f2D(f)
 
@@ -50,6 +51,7 @@ def test_mask(N=4):
     h = wmean_2D(X, Y, Z, l=l)
     assert h[0, 0].mask == True
     assert ~h[1:, 1:].mask.any()
+
 
 def test_whitenoise():
     """
@@ -83,6 +85,7 @@ def test_2Dmasked_array(N=25):
     h = wmean_2D(X, Y, data, l=l)
     assert h.mask.any()
 
+
 def eval_ones(x, y, z, l):
 
     h = wmean_2D(x, y, z, l=l)
@@ -93,18 +96,19 @@ def eval_ones(x, y, z, l):
     # Select the top 1 third of the positions
     thr = np.percentile(tmp, 70)
 
-    z = ma.masked_array(z, tmp>=thr)
+    z = ma.masked_array(z, tmp >= thr)
     h = wmean_2D(x, y, z, l=l)
     assert (h == 1).all()
 
     # Masked values should not interfere in the filtered output.
-    z.data[z.mask==True] = 1e10
+    z.data[z.mask == True] = 1e10
     h = wmean_2D(x, y, z, l=l)
     assert (h == 1).all()
 
     # With interp, the energy should also be preserved
     h = wmean_2D(x, y, z, l=l, interp=True)
     assert (h == 1).all()
+
 
 def test_ones(N=9):
     """ The energy must be preserved
