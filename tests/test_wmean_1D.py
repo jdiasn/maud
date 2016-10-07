@@ -44,11 +44,11 @@ def test_mask(N=10):
     y.mask[0] = True
     h = maud.wmean_1D(y, t=t, l=l)
     # The masked values @ input will be masked @ output
-    assert h[0].mask == True
+    assert h[0].mask is True
     assert ~h[1:].mask.any()
     if with_cython:
         h = cmaud.wmean_1D(y, t=t, l=l)
-        assert h[0].mask == True
+        assert h[0].mask is True
         assert ~h[1:].mask.any()
 
 
@@ -73,7 +73,7 @@ def eval_ones(y, t, l):
         assert (h == 1).all()
 
     # Masked values should not interfere in the filtered output.
-    y.data[y.mask == True] = 1e10
+    y.data[y.mask is True] = 1e10
     h = maud.wmean_1D(y, t=t, l=l)
     assert (h == 1).all()
     if with_cython:
